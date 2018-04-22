@@ -1,2 +1,2 @@
-# arcade-game.github.io
+# arcade-game
 Arcade Game Project
