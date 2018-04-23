@@ -142,6 +142,49 @@ var Engine = (function(global) {
         renderLives(); // Lifes Indicator
         loose();
     }
+    /*
+     * ScreenTouch support
+     */
+
+    let touchArray = [];
+
+
+    //This function catches touches point on screen and push it to touchArray
+    function handleStart(evt) {
+        evt.preventDefault();
+        touchArray.push(evt.changedTouches[0]);
+    }
+
+    //This function catches when player ends touches and also  push it to touchArray
+    function handleEnd(evt) {
+        evt.preventDefault()
+        touchArray.push(evt.changedTouches[0]);
+
+        let deltaX = touchArray[0].clientX - touchArray[1].clientX;
+        let deltaY = touchArray[0].clientY - touchArray[1].clientY;
+        let direction = '';
+
+        //This conditions checks which direction player swipe finger on screen
+        if (deltaY > 0 && (Math.abs(deltaY)) > Math.abs(deltaX)) {
+            direction = 'up';
+        }
+
+        if (deltaY < 0 && (Math.abs(deltaY)) > Math.abs(deltaX)) {
+            direction = 'down';
+        }
+
+        if (deltaX < 0 && (Math.abs(deltaY)) < Math.abs(deltaX)) {
+            direction = 'right';
+        }
+
+        if (deltaX > 0 && (Math.abs(deltaY)) < Math.abs(deltaX)) {
+            direction = 'left'
+        }
+
+        player.handleInput(direction);
+        touchArray = [];
+    }
+
 
     //player.scoring();
     //Draw the Lives
