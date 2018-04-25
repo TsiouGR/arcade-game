@@ -51,6 +51,16 @@ const Player = function(x, y) {
     this.dance = false;
 }
 
+class Player {
+    constructor(look = 0, x, y) {
+        this.look = this.changeLook(look, playerImages);
+        this.x = x;
+        this.y = y;
+        this.lives = 3;
+        this.points = 0;
+
+    }
+    
     //This method change Avatar
     changeLook(look, array) {
         this.look = array[look]
