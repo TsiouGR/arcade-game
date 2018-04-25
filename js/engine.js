@@ -12,20 +12,28 @@
  * This engine makes the canvas' context (ctx) object globally available to make 
  * writing app.js a little simpler to work with.
  */
-var Engine = (function(global) {
+
+var Engine = (function (global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
      */
-    var doc = global.document,
-        win = global.window,
-        canvas = doc.createElement('canvas'),
-        ctx = canvas.getContext('2d'),
-        lastTime;
+    const container = document.querySelector('.container');
+    const win = global.window;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const gems = document.createElement('div');
+    const ul = document.createElement('ul');
 
+    gems.appendChild(ul)
+    gems.className = 'gems';
+    let lastTime;
+    let myReq;
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    container.appendChild(canvas);
+    container.appendChild(gems)
+
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -37,14 +45,18 @@ var Engine = (function(global) {
          * would be the same for everyone (regardless of how fast their
          * computer is) - hurray time!
          */
-        var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
+        let now = Date.now(),
+            dt = ((now - lastTime) / 1000.0);
 
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
-        update(dt);
+        update();
+        // console.log(dt)
         render();
+
+
+
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -54,7 +66,38 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        myReq = requestAnimationFrame(main);
+
+        /*
+         * This stop animation frame when enemy touchs player
+         */
+        allEnemies.forEach(function (enemy) {
+            if (enemy.collision === true) {
+                cancelAnimationFrame(myReq);
+                player.x = 200;
+                player.y = 400;
+                player.lives--;
+                stopMove();
+
+                if (player.lives !== 0) {
+
+                    setTimeout(() => {
+                        myReq = requestAnimationFrame(main);
+                        startMove();
+
+                    }, 1000)
+                } else {
+                    setTimeout(() => {
+                        stopMove();
+                        player.update();
+                        reset();
+                    }, 1000)
+                }
+                enemy.collision = false;
+                enemy.dt = Math.floor(Math.random() * 6 + 1)
+
+            }
+        });
     }
 
     /* This function does some initial setup that should only occur once,
@@ -62,13 +105,14 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
+        //reset();
         lastTime = Date.now();
-        main();
+        render();
+        start()
     }
-    
+
     /*
-     * start function waits for choose player
+     * strat function waits for choose player
      * 
      */
 
@@ -84,7 +128,128 @@ var Engine = (function(global) {
             startMove();
             startPanel.style.display = 'none';
         });
-        
+
+        item1.whenGoodsApear();
+
+        //Display counter
+
+        counter.innerHTML = 'SCORE: ' + player.points;
+
+
+
+
+
+        // Add heart to panel lives
+
+        const hearts = document.querySelector('.lives ul')
+        if (hearts.lastElementChild) {
+            hearts.removeChild(hearts.lastElementChild)
+        }
+        for (i = 0; i < player.lives; i++) {
+            let live = document.createElement('li');
+            live.innerHTML = '<img src="images/heart1.png" alt="heart">';
+            document.querySelector('.lives ul').appendChild(live)
+        }
+
+        //Choosing player's avatar
+
+        const leftArrow = document.querySelector('#left');
+        const rightArrow = document.querySelector('#right');
+        let count = 0;
+
+        //Change Avatar in right
+        rightArrow.addEventListener('click', () => {
+            count++;
+            if (count === playerImages.length) {
+                count = 0;
+            }
+            playerImg.firstElementChild.src = playerImages[count];
+            player.changeLook(count, playerImages);
+            render();
+        });
+
+        //Change avatar in left
+        leftArrow.addEventListener('click', () => {
+            count--;
+            if (count < 0) {
+                count = playerImages.length - 1;
+            }
+            playerImg.firstElementChild.src = playerImages[count];
+            player.changeLook(count, playerImages);
+            render();
+        });
+    }
+
+
+    function keys(e) {
+        let allowedKeys = {
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
+        };
+        player.handleInput(allowedKeys[e.keyCode]);
+    }
+
+    /*
+     * ScreenTouch support
+     */
+
+    let touchArray = [];
+
+
+    //This function catches touches point on screen and push it to touchArray
+    function handleStart(evt) {
+        evt.preventDefault();
+        touchArray.push(evt.changedTouches[0]);
+    }
+
+    //This function catches when player ends touches and also  push it to touchArray
+    function handleEnd(evt) {
+        evt.preventDefault()
+        touchArray.push(evt.changedTouches[0]);
+
+        let deltaX = touchArray[0].clientX - touchArray[1].clientX;
+        let deltaY = touchArray[0].clientY - touchArray[1].clientY;
+        let direction = '';
+
+        //This conditions checks which direction player swipe finger on screen
+        if (deltaY > 0 && (Math.abs(deltaY)) > Math.abs(deltaX)) {
+            direction = 'up';
+        }
+
+        if (deltaY < 0 && (Math.abs(deltaY)) > Math.abs(deltaX)) {
+            direction = 'down';
+        }
+
+        if (deltaX < 0 && (Math.abs(deltaY)) < Math.abs(deltaX)) {
+            direction = 'right';
+        }
+
+        if (deltaX > 0 && (Math.abs(deltaY)) < Math.abs(deltaX)) {
+            direction = 'left'
+        }
+
+        player.handleInput(direction);
+        touchArray = [];
+    }
+
+
+    //This function allows player to do moves
+    function startMove() {
+        document.addEventListener('keyup', keys);
+        canvas.addEventListener("touchstart", handleStart, false);
+        canvas.addEventListener("touchend", handleEnd, false);
+    }
+
+    //This function blocks all moves 
+    function stopMove() {
+        document.removeEventListener('keyup', keys);
+        canvas.removeEventListener("touchstart", handleStart);
+        canvas.removeEventListener("touchend", handleEnd);
+    }
+
+
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
@@ -107,10 +272,13 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        // item1.update();
+        allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
         player.update();
+
+
     }
 
     /* This function initially draws the "game level", it will then call
@@ -119,19 +287,18 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-
     function render() {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png', // Top row is water
-                'images/stone-block.png', // Row 1 of 3 of stone
-                'images/stone-block.png', // Row 2 of 3 of stone
-                'images/stone-block.png', // Row 3 of 3 of stone
-                'images/grass-block.png', // Row 1 of 2 of grass
-                'images/grass-block.png' // Row 2 of 2 of grass
-            ],
+            'images/water-block.png', // Top row is water
+            'images/stone-block.png', // Row 1 of 3 of stone
+            'images/stone-block.png', // Row 2 of 3 of stone
+            'images/stone-block.png', // Row 3 of 3 of stone
+            'images/grass-block.png', // Row 1 of 2 of grass
+            'images/grass-block.png' // Row 2 of 2 of grass
+        ],
             numRows = 6,
             numCols = 5,
             row, col;
@@ -155,51 +322,8 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
+
         renderEntities();
-        renderScore(); // Score Indicator
-        renderLives(); // Lifes Indicator
-        loose();
-    }
-
-    //player.scoring();
-    //Draw the Lives
-    function renderLives() {
-        ctx.drawImage(Resources.get("images/Heart.png"), 0, 530, 65, 95);
-        ctx.font = "bold 30px Arial";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.fillText(player.lives, 32, 590);
-
-    }
-    //Draw the Score
-    function renderScore() {
-        ctx.font = "bold 25px Arial";
-        ctx.fillStyle = "blue";
-        ctx.textAlign = "left";
-        ctx.fillText("SCORE:", 0, 40);
-        ctx.fillText(player.score, 100, 40);
-    }
-
-    function loose() {
-        if (player.lives === 0) {
-            player.gameOver === true;
-            ctx.font = "bold 80px Tahoma";
-            ctx.fillStyle = "red";
-            ctx.textAlign = "center";
-            ctx.fillText("GAME OVER", 250, 300);
-            ctx.font = "bold 20px Tahoma";
-            ctx.fillStyle = "red";
-            ctx.textAlign = "center";
-            ctx.fillText("PRESS SPACE BAR TO RESTART", 250, 350);
-            document.addEventListener('keyup', function(e) {
-                if (e.keyCode == "32") {
-                    player.lives = 3;
-                    player.score = 0;
-                    console.log("space");
-                    player.gameOver === false;
-                }
-            })
-        }
     }
 
     /* This function is called by the render function and is called on each game
@@ -210,22 +334,40 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        allItems.forEach(function (item) {
+            item.render();
+        })
+        player.render();
+        allEnemies.forEach(function (enemy) {
             enemy.render();
         });
 
-        player.render();
     }
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
-
-
-
     function reset() {
-        //nope
+
+        allEnemies.forEach(function (enemy) {
+            enemy.x = -120;
+            enemy.dt = Math.floor(Math.random() * 3 + 1);
+
+        });
+
+        allItems.forEach(function (item) {
+            item.posX();
+            item.posY();
+            item.render();
+        })
+        ul.innerHTML = ''
+        player.lives = 3;
+        player.points = 0;
+        player.clear();
+        render();
+        start();
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -238,8 +380,20 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/Heart.png'
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/navigate_before.png',
+        'images/navigate_next.png',
+        'images/Gem-Blue-small.png',
+        'images/Gem-Green-small.png',
+        'images/Gem-Orange-small.png',
+        'images/enemy-walec2a.png',
+        'images/Selector.png'
     ]);
+
+
     Resources.onReady(init);
 
     /* Assign the canvas' context object to the global variable (the window
@@ -247,4 +401,7 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+    
+
 })(this);
