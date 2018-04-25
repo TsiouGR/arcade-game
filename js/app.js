@@ -51,6 +51,12 @@ const Player = function(x, y) {
     this.dance = false;
 }
 
+    //This method change Avatar
+    changeLook(look, array) {
+        this.look = array[look]
+        return this.look;
+    }
+
 // Condition used to stop random key strokes
 Player.prototype.update = function() {
     //Return the player back once they hit water: With delay
