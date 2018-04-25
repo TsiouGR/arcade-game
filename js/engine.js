@@ -389,7 +389,6 @@ var Engine = (function (global) {
         'images/Gem-Blue-small.png',
         'images/Gem-Green-small.png',
         'images/Gem-Orange-small.png',
-        'images/enemy-walec2a.png',
         'images/Selector.png'
     ]);
 
