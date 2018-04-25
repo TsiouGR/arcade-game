@@ -3,3 +3,54 @@ body {
      background-image: url("../images/background.png");
      background-size: cover;
 }
+
+/*
+ * Start panel
+ */
+
+.start {
+    width:  300px;
+    height:  200px;
+    background-color:  gainsboro;
+    position:  absolute;
+    left: 25%;
+    margin-left: auto;
+    margin-right:  auto;
+    top: 22%;
+    border-radius: 10px;
+    border: 1px solid #f3eaea;
+    display: none;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.text {
+    position: absolute;
+    width: 100%;
+    font-family: Bazaronite;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.nav {
+    width: 20%;
+    height: 50%;
+    margin: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+
+#left {
+    margin-left: 15px;
+}
+
+.player {
+    
+    width: 50%;
+    height: 50%;
+
+}
+
+.player img {
+    cursor: pointer;
+}
