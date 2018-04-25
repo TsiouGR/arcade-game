@@ -1,8 +1,8 @@
 body {
-     text-align: center;
-     background-image: url("../images/background.png");
-     background-size: cover;
+    text-align: center;
+    background-image: url("../images/background.png");
 }
+
 
 .container {
     width: 650px;
@@ -15,6 +15,75 @@ body {
     
     
 }
+
+/*
+ * Lives panel
+ */
+
+ .lives {
+    width: 60px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 2em;
+ }
+
+ .lives img {
+    width: 40px;
+    
+ }
+
+ .lives ul {
+    padding: 0.5em;
+ }
+
+ .lives li{
+    list-style: none;
+    padding: 0;
+ }
+
+/*
+ * Counter panel
+ */
+ 
+ .counter {
+    width: 400px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 3em;
+    color: #716d6d;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    left: 10%;
+ }
+
+/*
+ * Gems panel
+ */
+
+ .gems {
+    width: 60px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 2em;
+ }
+
+ .gems img {
+    width: 40px;
+ }
+
+ .gems ul {
+    padding: 0.5em;
+ }
+
+ .gems li{
+    list-style: none;
+    padding: 0;
+ }
+
 /*
  * Start panel
  */
@@ -37,7 +106,6 @@ body {
 .text {
     position: absolute;
     width: 100%;
-    font-family: Bazaronite;
     font-size: 1.5em;
     font-weight: bold;
 }
