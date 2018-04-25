@@ -66,7 +66,25 @@ var Engine = (function(global) {
         lastTime = Date.now();
         main();
     }
+    
+    /*
+     * start function waits for choose player
+     * 
+     */
 
+    function start() {
+        const startPanel = document.querySelector('.start');
+        startPanel.style.display = 'flex';
+        const playerImg = document.querySelector('.player');
+
+        playerImg.addEventListener('click', () => {
+            player.update();
+            cancelAnimationFrame(myReq);
+            main();
+            startMove();
+            startPanel.style.display = 'none';
+        });
+        
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
      * you implement your collision detection (when two entities occupy the
