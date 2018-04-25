@@ -52,7 +52,6 @@ const goodItems = [
 
 const enemyImages = [
     'images/enemy-bug.png',
-    'images/enemy-walec2a.png'
 ]
 
 let positionEnemy = 0;
