@@ -10,7 +10,7 @@
 ## Instructions
 
 You have to reach the water on the top of the board.
-Every time you reach the water you get 1 point, you have only 3 lives to spend! 
+Every time you reach the water you get 10 points, you have only 3 lives to spend! 
 
 Control your avatar with the keyboard arrows 
 
