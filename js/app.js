@@ -95,7 +95,7 @@ Player.prototype.handleInput = function(key) {
     if (this.x <= 2) this.x = 2;
     if (this.x >= 400) this.x = 400;
     if (this.y >= 405 || this.y <= -85) this.y = 405;
-    if (this.y < 0) player.score += 1;
+    if (this.y < 0) player.score += 10;
     //do a liitle dance when you get a point
     if (this.y < 0) {
         this.dance = true;
