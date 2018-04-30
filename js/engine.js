@@ -156,7 +156,7 @@ var Engine = (function(global) {
         //Draw the Score
     function renderScore() {
         ctx.font = "bold 25px Arial";
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "white";
         ctx.textAlign = "left";
         ctx.fillText("SCORE:", 0, 40);
         ctx.fillText(player.score, 100, 40);
