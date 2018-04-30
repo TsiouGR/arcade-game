@@ -165,14 +165,14 @@ var Engine = (function(global) {
     function loose() {
         if (player.lives === 0) {
             player.gameOver === true;
-            ctx.font = "bold 80px Tahoma";
+            ctx.font = "bold 70px Tahoma";
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER", 250, 300);
             ctx.font = "bold 20px Tahoma";
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
-            ctx.fillText("PRESS SPACE BAR TO RESTART", 250, 350);
+            ctx.fillText("PRESS SPACE BAR TO PLAY AGAIN", 250, 350);
             document.addEventListener('keyup', function(e) {
                 if (e.keyCode == "32") {
                     player.lives = 3;
