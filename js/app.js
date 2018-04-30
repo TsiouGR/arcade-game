@@ -1,5 +1,5 @@
 // Enemies our player must avoid. Passed x and y arguments
-var Enemy = function(x, y, velocity) {
+var Enemy = function (x, y, velocity) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -13,7 +13,7 @@ var Enemy = function(x, y, velocity) {
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Enemy.prototype.update = function (dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -32,7 +32,7 @@ Enemy.prototype.update = function(dt) {
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+Enemy.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -40,19 +40,19 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-const Player = function(x, y) {
+const Player = function (x, y) {
     this.score = 0;
     this.lives = 3;
     this.x = x;
     this.y = y;
-    this.sprite = 'char-boy.png';
+    this.sprite = 'images/char-boy.png';
     this.gameOver = false;
     this.pauseKey = false;
     this.dance = false;
 }
 
 // Condition used to stop random key strokes
-Player.prototype.update = function() {
+Player.prototype.update = function () {
     //Return the player back once they hit water: With delay
     if (this.y < 0) {
         this.pauseKey = true; //stop keyboard
@@ -69,11 +69,11 @@ Player.prototype.update = function() {
 }
 
 //Draw the player
-Player.prototype.render = function() {
+Player.prototype.render = function () {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-Player.prototype.handleInput = function(key) {
+Player.prototype.handleInput = function (key) {
     //conditions to start/stop the keystroke
     this.lives === 0 ? this.gameOver = true : this.gameOver = false;
     if (player.gameOver || player.pauseKey) return;
@@ -97,30 +97,31 @@ Player.prototype.handleInput = function(key) {
     if (this.y >= 405 || this.y <= -85) this.y = 405;
     if (this.y < 0) player.score += 1;
     //do a liitle dance when you get a point
-    if (this.y < 0) {
-        this.dance = true;
+    if(this.y<0){
+        this.dance=true;
         setTimeout(() => {
-            this.y -= 20;
+            this.y-=20;
         }, 100);
         setTimeout(() => {
-            this.y += 20;
+            this.y+=20;
         }, 200);
         setTimeout(() => {
-            this.y -= 20;
+            this.y-=20;
         }, 300);
         setTimeout(() => {
-            this.y += 20;
+            this.y+=20;
         }, 400);
     }
 }
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-const allEnemies = [
-    enemy1 = new Enemy(60, 60),
-    enemy2 = new Enemy(150, 145),
-    enemy3 = new Enemy(300, 230)
-];
+const allEnemies =
+    [
+        enemy1 = new Enemy(60, 60),
+        enemy2 = new Enemy(150, 145),
+        enemy3 = new Enemy(300, 230)
+    ];
 
 // Place the player object in a variable called player
 const player = new Player(202, 405);
