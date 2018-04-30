@@ -9,11 +9,12 @@
 
 ## Instructions
 
-In this game You have to reach top of the board (water place). Every move on street has You 10 points. Sometimes on board appears gems. Collect them. If you have collected 3 gems - speed on the street is increase. If you do it 3 times, you unblock move back.
+You have to reach the water on the top of the board.
+Every time you reach the water you get 1 point, you have only 3 lives to spend! 
 
-Control Your avatar with the keyboard arrows 
+Control your avatar with the keyboard arrows 
 
-**Good Luck**
+**Good Luck & Have Fun!**
 
 ## Play
 
