@@ -9,10 +9,11 @@
  * drawn but that is not the case. What's really happening is the entire "scene"
  * is being drawn over and over, presenting the illusion of animation.
  *
- * This engine makes the canvas' context (ctx) object globally available to make
+ * This engine makes the canvas' context (ctx) object globally available to make 
  * writing app.js a little simpler to work with.
  */
-var Engine = (function(global) {
+
+var Engine = (function (global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas elements height/width and add it to the DOM.
@@ -89,7 +90,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
         player.update();
@@ -107,13 +108,13 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png', // Top row is water
-                'images/stone-block.png', // Row 1 of 3 of stone
-                'images/stone-block.png', // Row 2 of 3 of stone
-                'images/stone-block.png', // Row 3 of 3 of stone
-                'images/grass-block.png', // Row 1 of 2 of grass
-                'images/grass-block.png' // Row 2 of 2 of grass
-            ],
+            'images/water-block.png',   // Top row is water
+            'images/stone-block.png',   // Row 1 of 3 of stone
+            'images/stone-block.png',   // Row 2 of 3 of stone
+            'images/stone-block.png',   // Row 3 of 3 of stone
+            'images/grass-block.png',   // Row 1 of 2 of grass
+            'images/grass-block.png'    // Row 2 of 2 of grass
+        ],
             numRows = 6,
             numCols = 5,
             row, col;
@@ -142,21 +143,21 @@ var Engine = (function(global) {
         renderLives(); // Lifes Indicator
         loose();
     }
-
+    
     //player.scoring();
     //Draw the Lives
     function renderLives() {
-            ctx.drawImage(Resources.get("images/Heart.png"), 0, 530, 65, 95);
-            ctx.font = "bold 30px Arial";
-            ctx.fillStyle = "white";
-            ctx.textAlign = "center";
-            ctx.fillText(player.lives, 32, 590);
+        ctx.drawImage(Resources.get("images/Heart.png"), 0, 530, 65, 95);
+        ctx.font = "bold 30px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(player.lives, 32, 590);
 
-        }
-        //Draw the Score
+    }
+    //Draw the Score
     function renderScore() {
         ctx.font = "bold 25px Arial";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "blue";
         ctx.textAlign = "left";
         ctx.fillText("SCORE:", 0, 40);
         ctx.fillText(player.score, 100, 40);
@@ -173,7 +174,7 @@ var Engine = (function(global) {
             ctx.fillStyle = "red";
             ctx.textAlign = "center";
             ctx.fillText("PRESS SPACE BAR TO RESTART", 250, 350);
-            document.addEventListener('keyup', function(e) {
+            document.addEventListener('keyup', function (e) {
                 if (e.keyCode == "32") {
                     player.lives = 3;
                     player.score = 0;
@@ -192,7 +193,7 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function (enemy) {
             enemy.render();
         });
 
