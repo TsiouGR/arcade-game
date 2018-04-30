@@ -17,7 +17,7 @@ Control Your avatar with the keyboard arrows
 
 ## Play
 
-### [Play here](http://frog.pkopy.pl)
+### [Play here](https://tsiougr.github.io/arcade-game/)
 
 ## Install
 
