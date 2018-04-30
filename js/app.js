@@ -28,21 +28,6 @@ Enemy.prototype.update = function(dt) {
         player.y = 405;
         player.lives -= 1;
     }
-    if (player.lives < 3) {
-        this.dance = true;
-        setTimeout(() => {
-            this.y -= 20;
-        }, 100);
-        setTimeout(() => {
-            this.y += 20;
-        }, 200);
-        setTimeout(() => {
-            this.y -= 20;
-        }, 300);
-        setTimeout(() => {
-            this.y += 20;
-        }, 400);
-    }
 };
 
 // Draw the enemy on the screen, required method for game
